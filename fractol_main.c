@@ -4,21 +4,21 @@ int32_t	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (argc == 1 || (argc == 2 && !strcmp(argv[1], "mandelbrot")))
+	if (argc == 1 || (argc == 2 && (ft_strcmp(argv[1], "mandelbrot") == 0)))
 	{
 		data.is_julia = 0;
 	}
-	else if (argc == 4 && !strcmp(argv[1], "julia"))
+	else if (argc == 4 && (ft_strcmp(argv[1], "julia") == 0))
 	{
 		data.is_julia = 1;
-		data.julia_re = atof(argv[2]);
-		data.julia_im = atof(argv[3]);
+		data.julia_re = ft_atof(argv[2]);
+		data.julia_im = ft_atof(argv[3]);
 	}
 	else
 	{
-		ft_printf("Usage: ./fractol mandelbrot\n");
-		ft_printf("   or: ./fractol julia <real> <imag>\n");
-		return (1);
+		ft_printf("Usage:	./fractol mandelbrot\n");
+		ft_printf("Or:	./fractol julia <real> <imag>\n");
+		return (1); // why is it return(1) and not return(0)?
 	}
 	mlx_set_setting(MLX_MAXIMIZED, false);
 	data.mlx = mlx_init(WIDTH, HEIGHT, "fractol", true);

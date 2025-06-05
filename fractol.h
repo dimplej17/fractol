@@ -26,5 +26,8 @@ typedef struct s_data
 void			draw_mandelbrot(t_data *data);
 void			draw_julia(t_data *data);
 int				get_color(int iter);
+void			put_pixel(mlx_image_t *img, int x, int y, int color);
+double			ft_atof(char *str);
+int				ft_strcmp(char *s1, char *s2);
 
 #endif
