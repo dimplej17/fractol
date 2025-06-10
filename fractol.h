@@ -11,32 +11,31 @@
 # include <unistd.h>
 
 # define WIDTH 800
-# define HEIGHT 800
-# define MAX_ITER 100
+# define HEIGHT 600
+#define MIN_REAL -2.0
+#define MAX_REAL  2.0
+#define MIN_IMAG -1.5
+#define MAX_IMAG  1.5
+# define MAX_ITER 1000
 
-typedef struct s_data
+// Structure to hold fractal parameters and MLX data
+typedef struct s_fractal
 {
-    mlx_t *mlx;
+    mlx_t       *mlx;
     mlx_image_t *img;
-    int is_julia;
-    double zoom;
-    double offset_x;  // Add offset_x to handle panning
-    double offset_y;  // Add offset_y to handle panning
-    int max_iter;
-    double julia_re;
-    double julia_im;
-    double mouse_x, mouse_y;           // Current mouse position
-    int is_dragging;                   // Whether we're currently dragging
-    double drag_start_x, drag_start_y; // Where drag started
-    double drag_offset_x, drag_offset_y; // Offset when drag started
-} t_data;
-void			draw_mandelbrot(t_data *data);
-void			draw_julia(t_data *data);
-int				get_color(int iter);
-void			put_pixel(mlx_image_t *img, int x, int y, int color);
-double			ft_atof(char *str);
-int				ft_strcmp(char *s1, char *s2);
-void scroll_hook(double xdelta, double ydelta, void *param);
-void render_fractal(t_data *data);
+    double      min_real;
+    double      max_real;
+    double      min_imag;
+    double      max_imag;
+    double      zoom_factor;
+} t_fractal;
+void draw_mandelbrot(t_fractal *fractal);
+uint32_t get_color(int iter, double x, double y);
+
+
+
+
+
+
 
 #endif

@@ -1,122 +1,70 @@
 #include "fractol.h"
 
-void draw_mandelbrot(t_data *data)
+uint32_t get_color(int iter, double x, double y)
 {
-    int x, y, i;
-    double zx, zy, cx, cy, tmp;
-    double scale = 4.0 / (WIDTH * data->zoom);  // Correct scaling based on zoom
+	if (iter == MAX_ITER)
+		return 0x000000FF;
 
-    for (y = 0; y < HEIGHT; y++)
+	// Smooth coloring using log
+	double mag = sqrt(x * x + y * y);
+	double smooth = iter + 1 - log(log(mag)) / log(2.0);
+
+	// Psychedelic coloring using sine waves
+	uint8_t r = (uint8_t)(sin(0.016 * smooth + 0) * 127 + 128);
+	uint8_t g = (uint8_t)(sin(0.016 * smooth + 2) * 127 + 128);
+	uint8_t b = (uint8_t)(sin(0.016 * smooth + 4) * 127 + 128);
+
+	return (r << 24 | g << 16 | b << 8 | 0xFF);  // ARGB
+}
+
+// (px, py) → mapped to C = a + bi
+// Z = 0 → loop → Z = Z² + C
+// If Z "escapes" (|Z| > 2), we stop.
+// Color pixel based on how quickly it escaped.
+// void draw_mandelbrot(mlx_image_t *img)
+// {
+// 	for (int px = 0; px < WIDTH; px++)
+// 	{
+// 		for (int py = 0; py < HEIGHT; py++)
+// 		{
+// 			double a = MIN_REAL + ((double)px / WIDTH) * (MAX_REAL - MIN_REAL);
+// 			double b = MIN_IMAG + ((double)py / HEIGHT) * (MAX_IMAG - MIN_IMAG);
+// 			double x = 0, y = 0;
+// 			int iter = 0;
+
+// 			while (x * x + y * y <= 4.0 && iter < MAX_ITER)
+// 			{
+// 				double xtemp = x * x - y * y + a;
+// 				y = 2 * x * y + b;
+// 				x = xtemp;
+// 				iter++;
+// 			}
+
+// 			mlx_put_pixel(img, px, py, get_color(iter, x, y));
+// 		}
+// 	}
+// }
+
+void draw_mandelbrot(t_fractal *fractal)
+{
+    for (int px = 0; px < WIDTH; px++)
     {
-        for (x = 0; x < WIDTH; x++)
+        for (int py = 0; py < HEIGHT; py++)
         {
-            zx = zy = 0;
-            cx = (x - WIDTH / 2) * scale + data->offset_x;  // Use offset_x for smooth panning
-            cy = (y - HEIGHT / 2) * scale + data->offset_y; // Use offset_y for smooth panning
-            i = 0;
-            while (zx * zx + zy * zy < 4 && i < data->max_iter)
+            double a = fractal->min_real + ((double)px / WIDTH) * (fractal->max_real - fractal->min_real);
+            double b = fractal->min_imag + ((double)py / HEIGHT) * (fractal->max_imag - fractal->min_imag);
+            double x = 0, y = 0;
+            int iter = 0;
+
+            while (x * x + y * y <= 4.0 && iter < MAX_ITER)
             {
-                tmp = zx * zx - zy * zy + cx;
-                zy = 2 * zx * zy + cy;
-                zx = tmp;
-                i++;
+                double xtemp = x * x - y * y + a;
+                y = 2 * x * y + b;
+                x = xtemp;
+                iter++;
             }
 
-            if (i == data->max_iter)
-{
-    uint32_t color = 0x000000FF; // Black for points in the set
-    mlx_put_pixel(data->img, x, y, color);
-}
-else
-{
-    double t = (double)i / data->max_iter;
-    
-    // Rainbow HSV color calculation
-    double hue = fmod(t * 360.0 * 3, 360.0); // 3 full rainbow cycles
-    double saturation = 1.0;
-    double value = 1.0;
-    
-    // Convert HSV to RGB
-    double c = value * saturation;
-    double x_val = c * (1 - fabs(fmod(hue / 60.0, 2) - 1));
-    double m = value - c;
-    
-    double r, g, b;
-    if (hue < 60) { r = c; g = x_val; b = 0; }
-    else if (hue < 120) { r = x_val; g = c; b = 0; }
-    else if (hue < 180) { r = 0; g = c; b = x_val; }
-    else if (hue < 240) { r = 0; g = x_val; b = c; }
-    else if (hue < 300) { r = x_val; g = 0; b = c; }
-    else { r = c; g = 0; b = x_val; }
-    
-    uint8_t red = (uint8_t)((r + m) * 255);
-    uint8_t green = (uint8_t)((g + m) * 255);
-    uint8_t blue = (uint8_t)((b + m) * 255);
-    
-    uint32_t color = (red << 24) | (green << 16) | (blue << 8) | 255;
-    mlx_put_pixel(data->img, x, y, color);
-}
-        }
-    }
-}
-
-void draw_julia(t_data *data)
-{
-    int x, y, i;
-    double zx, zy, tmp;
-    double scale = 4.0 / (WIDTH * data->zoom);  // Correct scaling based on zoom
-    double cx = data->julia_re;
-    double cy = data->julia_im;
-
-    for (y = 0; y < HEIGHT; y++)
-    {
-        for (x = 0; x < WIDTH; x++)
-        {
-            zx = (x - WIDTH / 2) * scale + data->offset_x;  // Use offset_x for smooth panning
-            zy = (y - HEIGHT / 2) * scale + data->offset_y; // Use offset_y for smooth panning
-            i = 0;
-            while (zx * zx + zy * zy < 4 && i < data->max_iter)
-            {
-                tmp = zx * zx - zy * zy + cx;
-                zy = 2 * zx * zy + cy;
-                zx = tmp;
-                i++;
-            }
-
-            if (i == data->max_iter)
-{
-    uint32_t color = 0x000000FF; // Black for points in the set
-    mlx_put_pixel(data->img, x, y, color);
-}
-else
-{
-    double t = (double)i / data->max_iter;
-    
-    // Rainbow HSV color calculation
-    double hue = fmod(t * 360.0 * 3, 360.0); // 3 full rainbow cycles
-    double saturation = 1.0;
-    double value = 1.0;
-    
-    // Convert HSV to RGB
-    double c = value * saturation;
-    double x_val = c * (1 - fabs(fmod(hue / 60.0, 2) - 1));
-    double m = value - c;
-    
-    double r, g, b;
-    if (hue < 60) { r = c; g = x_val; b = 0; }
-    else if (hue < 120) { r = x_val; g = c; b = 0; }
-    else if (hue < 180) { r = 0; g = c; b = x_val; }
-    else if (hue < 240) { r = 0; g = x_val; b = c; }
-    else if (hue < 300) { r = x_val; g = 0; b = c; }
-    else { r = c; g = 0; b = x_val; }
-    
-    uint8_t red = (uint8_t)((r + m) * 255);
-    uint8_t green = (uint8_t)((g + m) * 255);
-    uint8_t blue = (uint8_t)((b + m) * 255);
-    
-    uint32_t color = (red << 24) | (green << 16) | (blue << 8) | 255;
-    mlx_put_pixel(data->img, x, y, color);
-}
+            mlx_put_pixel(fractal->img, px, py, get_color(iter, x, y));
         }
     }
 }

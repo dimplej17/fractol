@@ -11,13 +11,15 @@ FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
 MLX_DIR = MLX42
 LIBMLX = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
+# Define additional linking flags for macOS frameworks
+LINK_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit
+
 # Headers
 HEADERS = -I . -I $(MLX_DIR)/include -I $(LIBFT_DIR) -I $(FT_PRINTF_DIR)
 
 # Define source files
-SRCS = fractol_main.c \
-	   draw.c \
-	   utils.c
+SRCS =	main.c \
+		draw.c \
 
 # Define object files
 OBJS = $(SRCS:%.c=%.o)
@@ -45,7 +47,7 @@ ft_printf:
 	@make -C $(FT_PRINTF_DIR)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBMLX) $(LIBFT) $(FT_PRINTF) $(HEADERS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBMLX) $(LIBFT) $(FT_PRINTF) $(HEADERS) $(LINK_FLAGS) -o $(NAME)
 
 # Rule to compile .c files into .o files
 %.o: %.c
@@ -65,3 +67,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean fclean all re libmlx libft ft_printf
+
