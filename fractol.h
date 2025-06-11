@@ -11,12 +11,12 @@
 # include <unistd.h>
 
 # define WIDTH 800
-# define HEIGHT 600
+# define HEIGHT 800
 #define MIN_REAL -2.0
 #define MAX_REAL  2.0
 #define MIN_IMAG -1.5
 #define MAX_IMAG  1.5
-# define MAX_ITER 1000
+# define MAX_ITER 300
 
 // Structure to hold fractal parameters and MLX data
 typedef struct s_fractal
@@ -27,10 +27,17 @@ typedef struct s_fractal
     double      max_real;
     double      min_imag;
     double      max_imag;
-    double      zoom_factor;
+    double      julia_real;  // Real part of Julia constant
+    double      julia_imag;  // Imaginary part of Julia constant
+    int         fractal_type; // 0 = Mandelbrot, 1 = Julia
+    char        *fractal_name; // Name for window title
 } t_fractal;
 void draw_mandelbrot(t_fractal *fractal);
-uint32_t get_color(int iter, double x, double y);
+uint32_t get_color(int iter);
+void draw_julia(t_fractal *fractal);
+void draw_fractal(t_fractal *fractal);
+
+
 
 
 
@@ -39,3 +46,13 @@ uint32_t get_color(int iter, double x, double y);
 
 
 #endif
+
+// # Display Mandelbrot set
+// ./fractal mandelbrot
+
+// # Display Julia sets with different complex constants
+// ./fractal julia -0.7269 0.1889    # Classic Julia set
+// ./fractal julia -0.4 0.6          # Lightning pattern
+// ./fractal julia 0.285 0.01        # Spiral pattern
+// ./fractal julia -0.8 0.156        # Feather pattern
+// ./fractal julia -0.123 0.745      # Dragon pattern
