@@ -40,30 +40,23 @@ void draw_mandelbrot(t_fractal *fractal)
     {
         for (int py = 0; py < HEIGHT; py++)
         {
-            // Map pixel to complex plane with higher precision
             double a = fractal->min_real + ((double)px / (double)WIDTH) * (fractal->max_real - fractal->min_real);
             double b = fractal->min_imag + ((double)py / (double)HEIGHT) * (fractal->max_imag - fractal->min_imag);
             
             double x = 0.0, y = 0.0;
             int iter = 0;
-            
-            // Optimized iteration with early bailout
+
             while (iter < MAX_ITER)
             {
                 double x_squared = x * x;
                 double y_squared = y * y;
-                
-                // Check for escape condition
                 if (x_squared + y_squared > 4.0)
                     break;
-                
-                // Mandelbrot iteration: z = z² + c
                 double xtemp = x_squared - y_squared + a;
                 y = 2.0 * x * y + b;
                 x = xtemp;
                 iter++;
             }
-
             mlx_put_pixel(fractal->img, px, py, get_color(iter));
         }
     }
@@ -115,31 +108,4 @@ void draw_fractal(t_fractal *fractal)
         draw_julia(fractal);
 }
 
-// (px, py) → mapped to C = a + bi
-// Z = 0 → loop → Z = Z² + C
-// If Z "escapes" (|Z| > 2), we stop.
-// Color pixel based on how quickly it escaped.
-// void draw_mandelbrot(mlx_image_t *img)
-// {
-// 	for (int px = 0; px < WIDTH; px++)
-// 	{
-// 		for (int py = 0; py < HEIGHT; py++)
-// 		{
-// 			double a = MIN_REAL + ((double)px / WIDTH) * (MAX_REAL - MIN_REAL);
-// 			double b = MIN_IMAG + ((double)py / HEIGHT) * (MAX_IMAG - MIN_IMAG);
-// 			double x = 0, y = 0;
-// 			int iter = 0;
-
-// 			while (x * x + y * y <= 4.0 && iter < MAX_ITER)
-// 			{
-// 				double xtemp = x * x - y * y + a;
-// 				y = 2 * x * y + b;
-// 				x = xtemp;
-// 				iter++;
-// 			}
-
-// 			mlx_put_pixel(img, px, py, get_color(iter, x, y));
-// 		}
-// 	}
-// }
 

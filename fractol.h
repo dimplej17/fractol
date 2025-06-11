@@ -12,10 +12,6 @@
 
 # define WIDTH 800
 # define HEIGHT 800
-#define MIN_REAL -2.0
-#define MAX_REAL  2.0
-#define MIN_IMAG -1.5
-#define MAX_IMAG  1.5
 # define MAX_ITER 300
 
 // Structure to hold fractal parameters and MLX data
