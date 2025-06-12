@@ -37,7 +37,7 @@ uint32_t		color_band_mid(int iter);
 uint32_t		color_band_low(int iter);
 uint32_t		get_color(int iter);
 int				julia_pixel_iter(double x, double y, double c_real, double c_imag);
-void			compute_and_draw_julia_row(t_fractal *f, int px);
+void			compute_and_draw_julia(t_fractal *f, int px);
 void			draw_julia(t_fractal *fractal);
 void			draw_fractal(t_fractal *fractal);
 int				ft_strcmp(char *s1, char *s2);

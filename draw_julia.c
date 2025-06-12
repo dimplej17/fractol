@@ -22,7 +22,7 @@ int	julia_pixel_iter(double x, double y, double c_real, double c_imag)
 	return (iter);
 }
 
-void	compute_and_draw_julia_row(t_fractal *f, int px)
+void	compute_and_draw_julia(t_fractal *f, int px)
 {
 	int		py;
 	double	x;
