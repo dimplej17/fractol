@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 20:23:15 by djanardh          #+#    #+#             */
+/*   Updated: 2025/06/12 20:34:15 by djanardh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FRACTOL_H
 # define FRACTOL_H
 # include "MLX42/include/MLX42/MLX42.h"
@@ -6,10 +18,10 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stddef.h>
+# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include <stdint.h>
 
 # define WIDTH 800
 # define HEIGHT 800
@@ -24,19 +36,29 @@ typedef struct s_fractal
 	double		max_real;
 	double		min_imag;
 	double		max_imag;
-	double 		julia_real;
-	double 		julia_imag;
-	int 		fractal_type;   // 0 = Mandelbrot, 1 = Julia
-	char 		*fractal_name; 
+	double		julia_real;
+	double		julia_imag;
+	int			fractal_type;
+	char		*fractal_name;
 }				t_fractal;
+typedef struct s_zoom
+{
+	double		center_real;
+	double		center_imag;
+	double		real_range;
+	double		imag_range;
+	double		new_real_range;
+	double		new_imag_range;
+}				t_zoom;
 void			compute_and_draw_row(t_fractal *f, int px);
-int				mandelbrot_pixel_iter(double a, double b);
+int				mandelbrot_pixel_iter(double a, double b, double x, double y);
 void			draw_mandelbrot(t_fractal *fractal);
 uint32_t		color_band_high(int iter);
 uint32_t		color_band_mid(int iter);
 uint32_t		color_band_low(int iter);
 uint32_t		get_color(int iter);
-int				julia_pixel_iter(double x, double y, double c_real, double c_imag);
+int				julia_pixel_iter(double x, double y, double c_real,
+					double c_imag);
 void			compute_and_draw_julia(t_fractal *f, int px);
 void			draw_julia(t_fractal *fractal);
 void			draw_fractal(t_fractal *fractal);

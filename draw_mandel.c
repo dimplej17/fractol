@@ -1,16 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_mandel.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 20:21:57 by djanardh          #+#    #+#             */
+/*   Updated: 2025/06/12 20:28:15 by djanardh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
-int	mandelbrot_pixel_iter(double a, double b)
+int	mandelbrot_pixel_iter(double a, double b, double x, double y)
 {
-	double	x;
-	double	y;
 	double	x_squared;
 	double	y_squared;
 	double	xtemp;
 	int		iter;
 
-	x = 0.0;
-	y = 0.0;
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
@@ -38,7 +46,7 @@ void	compute_and_draw_row(t_fractal *f, int px)
 	{
 		a = f->min_real + ((double)px / WIDTH) * (f->max_real - f->min_real);
 		b = f->min_imag + ((double)py / HEIGHT) * (f->max_imag - f->min_imag);
-		iter = mandelbrot_pixel_iter(a, b);
+		iter = mandelbrot_pixel_iter(a, b, 0, 0);
 		mlx_put_pixel(f->img, px, py, get_color(iter));
 		py++;
 	}
@@ -56,10 +64,10 @@ void	draw_mandelbrot(t_fractal *fractal)
 	}
 }
 
-void draw_fractal(t_fractal *fractal)
+void	draw_fractal(t_fractal *fractal)
 {
-    if (fractal->fractal_type == 0)
-        draw_mandelbrot(fractal);
-    else
-        draw_julia(fractal);
+	if (fractal->fractal_type == 0)
+		draw_mandelbrot(fractal);
+	else
+		draw_julia(fractal);
 }

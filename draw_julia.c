@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_julia.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 20:21:50 by djanardh          #+#    #+#             */
+/*   Updated: 2025/06/12 20:34:44 by djanardh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 int	julia_pixel_iter(double x, double y, double c_real, double c_imag)
@@ -47,7 +59,7 @@ void	draw_julia(t_fractal *fractal)
 	px = 0;
 	while (px < WIDTH)
 	{
-		compute_and_draw_julia_row(fractal, px);
+		compute_and_draw_julia(fractal, px);
 		px++;
 	}
 }

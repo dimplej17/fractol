@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 20:20:59 by djanardh          #+#    #+#             */
+/*   Updated: 2025/06/12 20:25:49 by djanardh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 void	ft_error(char *message)
@@ -14,7 +26,8 @@ void	print_usage(char *program_name)
 	ft_printf("Usage: %s <fractal_type> [parameters]\n\n", program_name);
 	ft_printf("Available fractal types:\n");
 	ft_printf("  mandelbrot                    - Display the Mandelbrot set\n");
-	ft_printf("  julia <real> <imag>           - Display Julia set with complex constant c = real + imag*i\n\n");
+	ft_printf("  julia <real> <imag>");
+	ft_printf("Display Julia set with complex constant c = real + imag*i\n\n");
 	ft_printf("Examples:\n");
 	ft_printf("  %s mandelbrot\n", program_name);
 	ft_printf("  %s julia -0.7269 0.1889      # Classic Julia set\n",

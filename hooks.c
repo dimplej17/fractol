@@ -1,26 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 20:21:11 by djanardh          #+#    #+#             */
+/*   Updated: 2025/06/12 20:32:09 by djanardh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
 
 // Zoom function - centers zoom on the given screen coordinates
 void	zoom_at_point(t_fractal *fractal, int mouse_x, int mouse_y,
 		double zoom_factor)
 {
-	double	center_real;
-	double	center_imag;
-	double	real_range;
-	double	imag_range;
-	double	new_real_range;
-	double	new_imag_range;
+	t_zoom	z;
 
-	center_real = screen_to_real(mouse_x, fractal);
-	center_imag = screen_to_imag(mouse_y, fractal);
-	real_range = fractal->max_real - fractal->min_real;
-	imag_range = fractal->max_imag - fractal->min_imag;
-	new_real_range = real_range * zoom_factor;
-	new_imag_range = imag_range * zoom_factor;
-	fractal->min_real = center_real - new_real_range / 2.0;
-	fractal->max_real = center_real + new_real_range / 2.0;
-	fractal->min_imag = center_imag - new_imag_range / 2.0;
-	fractal->max_imag = center_imag + new_imag_range / 2.0;
+	z.center_real = screen_to_real(mouse_x, fractal);
+	z.center_imag = screen_to_imag(mouse_y, fractal);
+	z.real_range = fractal->max_real - fractal->min_real;
+	z.imag_range = fractal->max_imag - fractal->min_imag;
+	z.new_real_range = z.real_range * zoom_factor;
+	z.new_imag_range = z.imag_range * zoom_factor;
+	fractal->min_real = z.center_real - z.new_real_range / 2.0;
+	fractal->max_real = z.center_real + z.new_real_range / 2.0;
+	fractal->min_imag = z.center_imag - z.new_imag_range / 2.0;
+	fractal->max_imag = z.center_imag + z.new_imag_range / 2.0;
 }
 
 // Mouse scroll hook for zooming
