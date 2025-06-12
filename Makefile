@@ -21,6 +21,9 @@ HEADERS = -I . -I $(MLX_DIR)/include -I $(LIBFT_DIR) -I $(FT_PRINTF_DIR)
 SRCS =	main.c \
 		draw.c \
 		utils.c \
+		parse.c \
+		hooks.c \
+		coordinates.c
 
 # Define object files
 OBJS = $(SRCS:%.c=%.o)

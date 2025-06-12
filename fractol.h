@@ -33,6 +33,9 @@ uint32_t		get_color(int iter);
 void			draw_julia(t_fractal *fractal);
 void			draw_fractal(t_fractal *fractal);
 int				ft_strcmp(char *s1, char *s2);
+int				skip_whitespace_and_sign(char *str, int *sign);
+int				parse_integer_part(char *str, int *i);
+double			parse_decimal_part(char *str, int *i);
 double			ft_atod(char *str);
 double			screen_to_real(int px, t_fractal *fractal);
 double			screen_to_imag(int py, t_fractal *fractal);
@@ -50,15 +53,6 @@ int				setup_julia_params(char *arg1, char *arg2, t_fractal *fractal);
 int				setup_julia(char *argv[], int argc, t_fractal *fractal);
 int				parse_arguments(int argc, char *argv[], t_fractal *fractal);
 void			print_controls(void);
+int				is_valid_double(char *str, double *out);
 
 #endif
-
-// # Display Mandelbrot set
-// ./fractal mandelbrot
-
-// # Display Julia sets with different complex constants
-// ./fractal julia -0.7269 0.1889    # Classic Julia set
-// ./fractal julia -0.4 0.6          # Lightning pattern
-// ./fractal julia 0.285 0.01        # Spiral pattern
-// ./fractal julia -0.8 0.156        # Feather pattern
-// ./fractal julia -0.123 0.745      # Dragon pattern
