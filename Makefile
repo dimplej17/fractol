@@ -19,11 +19,13 @@ HEADERS = -I . -I $(MLX_DIR)/include -I $(LIBFT_DIR) -I $(FT_PRINTF_DIR)
 
 # Define source files
 SRCS =	main.c \
-		draw.c \
+		draw_mandel.c \
+		draw_julia.c \
 		utils.c \
 		parse.c \
 		hooks.c \
-		coordinates.c
+		coordinates.c \
+		color.c
 
 # Define object files
 OBJS = $(SRCS:%.c=%.o)

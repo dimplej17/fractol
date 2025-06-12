@@ -9,6 +9,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include <stdint.h>
 
 # define WIDTH 800
 # define HEIGHT 800
@@ -23,13 +24,20 @@ typedef struct s_fractal
 	double		max_real;
 	double		min_imag;
 	double		max_imag;
-	double julia_real;  // Real part of Julia constant
-	double julia_imag;  // Imaginary part of Julia constant
-	int fractal_type;   // 0 = Mandelbrot, 1 = Julia
-	char *fractal_name; // Name for window title
+	double 		julia_real;
+	double 		julia_imag;
+	int 		fractal_type;   // 0 = Mandelbrot, 1 = Julia
+	char 		*fractal_name; 
 }				t_fractal;
+void			compute_and_draw_row(t_fractal *f, int px);
+int				mandelbrot_pixel_iter(double a, double b);
 void			draw_mandelbrot(t_fractal *fractal);
+uint32_t		color_band_high(int iter);
+uint32_t		color_band_mid(int iter);
+uint32_t		color_band_low(int iter);
 uint32_t		get_color(int iter);
+int				julia_pixel_iter(double x, double y, double c_real, double c_imag);
+void			compute_and_draw_julia_row(t_fractal *f, int px);
 void			draw_julia(t_fractal *fractal);
 void			draw_fractal(t_fractal *fractal);
 int				ft_strcmp(char *s1, char *s2);
