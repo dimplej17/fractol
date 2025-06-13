@@ -12,23 +12,23 @@
 
 #include "fractol.h"
 
-int	julia_pixel_iter(double x, double y, double c_real, double c_imag)
+int	julia_pixel_iter(double z_real, double z_imag, double c_real, double c_imag)
 {
-	double	x_squared;
-	double	y_squared;
-	double	xtemp;
+	double	a_squared;
+	double	b_squared;
+	double	atemp;
 	int		iter;
 
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
-		x_squared = x * x;
-		y_squared = y * y;
-		if (x_squared + y_squared > 4)
+		a_squared = z_real * z_real;
+		b_squared = z_imag * z_imag;
+		if (a_squared + b_squared > 4)
 			break ;
-		xtemp = x_squared - y_squared + c_real;
-		y = 2 * x * y + c_imag;
-		x = xtemp;
+		atemp = a_squared - b_squared + c_real;
+		z_imag = 2 * z_real * z_imag + c_imag;
+		z_real = atemp;
 		iter++;
 	}
 	return (iter);
@@ -37,16 +37,16 @@ int	julia_pixel_iter(double x, double y, double c_real, double c_imag)
 void	compute_and_draw_julia(t_fractal *f, int px)
 {
 	int		py;
-	double	x;
-	double	y;
+	double	z_real;
+	double	z_imag;
 	int		iter;
 
 	py = 0;
 	while (py < HEIGHT)
 	{
-		x = f->min_real + ((double)px / WIDTH) * (f->max_real - f->min_real);
-		y = f->min_imag + ((double)py / HEIGHT) * (f->max_imag - f->min_imag);
-		iter = julia_pixel_iter(x, y, f->julia_real, f->julia_imag);
+		z_real = f->min_real + ((double)px / WIDTH) * (f->max_real - f->min_real);
+		z_imag = f->min_imag + ((double)py / HEIGHT) * (f->max_imag - f->min_imag);
+		iter = julia_pixel_iter(z_real, z_imag, f->julia_real, f->julia_imag);
 		mlx_put_pixel(f->img, px, py, get_color(iter));
 		py++;
 	}

@@ -50,15 +50,14 @@ typedef struct s_zoom
 	double		new_real_range;
 	double		new_imag_range;
 }				t_zoom;
-void			compute_and_draw_row(t_fractal *f, int px);
+void			compute_and_draw_mandel(t_fractal *f, int px);
 int				mandelbrot_pixel_iter(double a, double b, double x, double y);
 void			draw_mandelbrot(t_fractal *fractal);
 uint32_t		color_band_high(int iter);
 uint32_t		color_band_mid(int iter);
 uint32_t		color_band_low(int iter);
 uint32_t		get_color(int iter);
-int				julia_pixel_iter(double x, double y, double c_real,
-					double c_imag);
+int				julia_pixel_iter(double z_real, double z_imag, double c_real, double c_imag);
 void			compute_and_draw_julia(t_fractal *f, int px);
 void			draw_julia(t_fractal *fractal);
 void			draw_fractal(t_fractal *fractal);
@@ -83,6 +82,6 @@ int				setup_julia_params(char *arg1, char *arg2, t_fractal *fractal);
 int				setup_julia(char *argv[], int argc, t_fractal *fractal);
 int				parse_arguments(int argc, char *argv[], t_fractal *fractal);
 void			print_controls(void);
-int				is_valid_double(char *str, double *out);
+int				is_valid_double(char *str, double *out, int i);
 
 #endif

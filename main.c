@@ -60,7 +60,7 @@ int	main(int argc, char **argv)
 	if (!parse_arguments(argc, argv, &fractal))
 		return (1);
 	print_controls();
-	fractal.mlx = mlx_init(WIDTH, HEIGHT, fractal.fractal_name, true);
+	fractal.mlx = mlx_init(WIDTH, HEIGHT, fractal.fractal_name, false);
 	if (!fractal.mlx)
 		ft_error("Failed to initialize MLX");
 	fractal.img = mlx_new_image(fractal.mlx, WIDTH, HEIGHT);

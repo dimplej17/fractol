@@ -12,41 +12,41 @@
 
 #include "fractol.h"
 
-int	mandelbrot_pixel_iter(double a, double b, double x, double y)
+int	mandelbrot_pixel_iter(double c_real, double c_imag, double a, double b)
 {
-	double	x_squared;
-	double	y_squared;
-	double	xtemp;
+	double	a_squared;
+	double	b_squared;
+	double	atemp;
 	int		iter;
 
 	iter = 0;
 	while (iter < MAX_ITER)
 	{
-		x_squared = x * x;
-		y_squared = y * y;
-		if (x_squared + y_squared > 4)
+		a_squared = a * a;
+		b_squared = b * b;
+		if (a_squared + b_squared > 4)
 			break ;
-		xtemp = x_squared - y_squared + a;
-		y = 2 * x * y + b;
-		x = xtemp;
+		atemp = a_squared - b_squared + c_real;
+		b = 2 * a * b + c_imag;
+		a = atemp;
 		iter++;
 	}
 	return (iter);
 }
 
-void	compute_and_draw_row(t_fractal *f, int px)
+void	compute_and_draw_mandel(t_fractal *f, int px)
 {
 	int		py;
-	double	a;
-	double	b;
+	double	c_real;
+	double	c_imag;
 	int		iter;
 
 	py = 0;
 	while (py < HEIGHT)
 	{
-		a = f->min_real + ((double)px / WIDTH) * (f->max_real - f->min_real);
-		b = f->min_imag + ((double)py / HEIGHT) * (f->max_imag - f->min_imag);
-		iter = mandelbrot_pixel_iter(a, b, 0, 0);
+		c_real = f->min_real + ((double)px / WIDTH) * (f->max_real - f->min_real);
+		c_imag = f->min_imag + ((double)py / HEIGHT) * (f->max_imag - f->min_imag);
+		iter = mandelbrot_pixel_iter(c_real, c_imag, 0, 0);
 		mlx_put_pixel(f->img, px, py, get_color(iter));
 		py++;
 	}
@@ -59,7 +59,7 @@ void	draw_mandelbrot(t_fractal *fractal)
 	px = 0;
 	while (px < WIDTH)
 	{
-		compute_and_draw_row(fractal, px);
+		compute_and_draw_mandel(fractal, px);
 		px++;
 	}
 }

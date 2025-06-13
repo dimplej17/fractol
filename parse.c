@@ -12,8 +12,31 @@
 
 #include "fractol.h"
 
-int	is_valid_double(char *str, double *out)
+int	is_valid_double(char *str, double *out, int i)
 {
+	int has_dot = 0;
+	int has_digit = 0;
+
+	if (!str || !*str)
+		return (-1);
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (str[i] == '.')
+		{
+			if (has_dot)
+				return (-1);
+			has_dot = 1;
+		}
+		else if (str[i] >= '0' && str[i] <= '9')
+			has_digit = 1;
+		else
+			return (-1);
+		i++;
+	}
+	if (!has_digit)
+		return (-1);
 	*out = ft_atod(str);
 	return (1);
 }
@@ -34,7 +57,7 @@ int	setup_julia_params(char *arg1, char *arg2, t_fractal *fractal)
 	double	real;
 	double	imag;
 
-	if (!is_valid_double(arg1, &real) || !is_valid_double(arg2, &imag))
+	if (is_valid_double(arg1, &real, 0) < 0 || is_valid_double(arg2, &imag, 0) < 0)
 	{
 		ft_printf("Error: Invalid Julia constants\n\n");
 		return (0);
@@ -46,8 +69,6 @@ int	setup_julia_params(char *arg1, char *arg2, t_fractal *fractal)
 
 int	setup_julia(char *argv[], int argc, t_fractal *fractal)
 {
-	static char	title[256];
-
 	if (argc != 4)
 	{
 		ft_printf("Error: Julia set requires exactly 2 parameters\n\n");
@@ -60,9 +81,7 @@ int	setup_julia(char *argv[], int argc, t_fractal *fractal)
 	fractal->max_real = 2.0;
 	fractal->min_imag = -2.0;
 	fractal->max_imag = 2.0;
-	snprintf(title, sizeof(title), "Julia Set: c = %.4f + %.4fi",
-		fractal->julia_real, fractal->julia_imag);
-	fractal->fractal_name = title;
+	fractal->fractal_name = "Julia Set";
 	return (1);
 }
 
